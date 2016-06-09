@@ -60,8 +60,8 @@ In your `app/start/global.php`, add the following, for each model you wish to st
 <?php
 // ...
 
-MyEloquentPostModel::observe(new \Sleavely\Datadiff\Observer);
-MyEloquentCommentModel::observe(new \Sleavely\Datadiff\Observer);
+MyEloquentPostModel::observe(new \Sleavely\Datadiff\DatadiffObserver);
+MyEloquentCommentModel::observe(new \Sleavely\Datadiff\DatadiffObserver);
 ```
 
 And in the model:
@@ -70,7 +70,7 @@ And in the model:
 <?php
 
 class MyEloquentPostModel extends Eloquent {
-  use \Sleavely\Datadiff\DiffTrait;
+  use \Sleavely\Datadiff\DatadiffTrait;
 }
 ```
 
@@ -78,7 +78,7 @@ class MyEloquentPostModel extends Eloquent {
 
 ### Viewing diffs
 
-Because we added the DiffTrait to our model, we can do cool stuff like:
+Because we added the DatadiffTrait to our model, we can do cool stuff like:
 
 ```php
 
@@ -131,7 +131,7 @@ If you dont want to set diff_meta every time, you can declare your own [accessor
 <?php
 
 class MyEloquentPostModel extends Eloquent {
-  use \Sleavely\Datadiff\DiffTrait;
+  use \Sleavely\Datadiff\DatadiffTrait;
 
   public function getDiffMetaAttribute($value)
   {

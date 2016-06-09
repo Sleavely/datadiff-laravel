@@ -1,7 +1,7 @@
 <?php
 namespace Sleavely\Datadiff;
 
-class Observer {
+class DatadiffObserver {
 
     public function saved($model)
     {
