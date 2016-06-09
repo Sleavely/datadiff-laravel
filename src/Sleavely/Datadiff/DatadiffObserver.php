@@ -20,4 +20,18 @@ class DatadiffObserver {
         }
     }
 
+    public function deleted($model)
+    {
+        // Verify that the model implements our required traits
+        $traits = class_uses($model);
+        if(in_array('DatadiffTrait', $traits))
+        {
+            \Datadiff::deleteModel($model);
+        }
+        else
+        {
+            throw new Exceptions\TraitNotFoundException;
+        }
+    }
+
 }

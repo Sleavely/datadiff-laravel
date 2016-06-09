@@ -154,4 +154,4 @@ $obj2 = Post::find(222);
 $diff = Datadiff::compare($obj1, $obj2);
 ```
 
-The comparison is made with [gamringer/JSONPatch](https://github.com/gamringer/JSONPatch) and will return an instance of `\gamringer\JSONPatch\Patch`.
+The comparison is made with [mikemccabe/json-patch-php](https://github.com/mikemccabe/json-patch-php) and returns an array with JSON Patch operations.
