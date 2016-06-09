@@ -9,11 +9,17 @@
             "email": "contact@joakimhedlund.com"
         }
     ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/mikemccabe/json-patch-php"
+        }
+    ],
     "require": {
         "php": ">=5.4.0",
         "illuminate/support": "4.2.*",
-        "elasticsearch/elasticsearch": "~1.1",
-        "gamringer/php-json-patch": "~1.0"
+        "elasticsearch/elasticsearch": "~1.0|~2.0",
+        "mikemccabe/json-patch-php": "dev-master"
     },
     "autoload": {
         "psr-0": {
