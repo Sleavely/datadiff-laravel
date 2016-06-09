@@ -1,0 +1,24 @@
+{
+    "name": "sleavely/datadiff-laravel",
+    "description": "Version history for Eloquent models.",
+    "keywords": ["laravel", "datadiff"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Joakim Hedlund",
+            "email": "contact@joakimhedlund.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "illuminate/support": "4.2.*",
+        "elasticsearch/elasticsearch": "~1.1",
+        "gamringer/php-json-patch": "~1.0"
+    },
+    "autoload": {
+        "psr-0": {
+            "Sleavely\\Datadiff\\": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}
