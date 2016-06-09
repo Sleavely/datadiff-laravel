@@ -32,7 +32,7 @@ return array(
   // ...
   'aliases' => array(
     // ...
-    'Datadiff' => 'Sleavely\Datadiff\Facades\Datadiff',
+    'Datadiff' => 'Sleavely\Datadiff\Facades\DatadiffFacade',
   ),
 );
 ```
