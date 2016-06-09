@@ -130,7 +130,7 @@ class Datadiff {
 
     protected function esClient()
     {
-        if(static::$es_client === FALSE)
+        if(static::$es_client === NULL)
         {
             // Init ES
             $hosts = \Config::get('datadiff::elasticsearch.hosts', 'localhost:9200');
@@ -143,7 +143,7 @@ class Datadiff {
     }
     public function rebootEsClient()
     {
-        static::$es_client = FALSE;
+        static::$es_client = NULL;
         return $this->esClient();
     }
 
