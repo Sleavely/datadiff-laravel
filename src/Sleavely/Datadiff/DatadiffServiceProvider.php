@@ -1,8 +1,7 @@
 <?php
-namespace Sleavely\Datadiff\Providers;
+namespace Sleavely\Datadiff;
 
 use \Illuminate\Support\ServiceProvider;
-use \Sleavely\Datadiff\Datadiff;
 
 class DatadiffServiceProvider extends ServiceProvider {
 	/**
@@ -18,7 +17,7 @@ class DatadiffServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-		$this->package('Sleavely/Datadiff');
+		$this->package('sleavely/datadiff');
 	}
 	/**
 	 * Register the service provider.
@@ -31,5 +30,14 @@ class DatadiffServiceProvider extends ServiceProvider {
 		{
 	    return new Datadiff;
 		});
+	}
+	/**
+	 * Get the services provided by the provider.
+	 *
+	 * @return array
+	 */
+	public function provides()
+	{
+		return array('datadiff');
 	}
 }

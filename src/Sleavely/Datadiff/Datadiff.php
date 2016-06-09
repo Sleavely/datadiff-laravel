@@ -133,8 +133,8 @@ class Datadiff {
         if(static::$es_client === NULL)
         {
             // Init ES
-            $hosts = \Config::get('datadiff::elasticsearch.hosts', 'localhost:9200');
-            $index = \Config::get('datadiff::elasticsearch.index', 'datadiff');
+            $hosts = \Config::get('datadiff::elasticsearch.hosts');
+            $index = \Config::get('datadiff::elasticsearch.index');
 
             static::$es_client = new ElasticsearchClient(['hosts' => $hosts]);
             static::$es_index = $index;
