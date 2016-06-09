@@ -29,8 +29,7 @@ class DatadiffServiceProvider extends ServiceProvider {
 	{
 		\App::bind('datadiff', function()
 		{
-			$awesome = Config::get('datadiff::awesome');
-		    return new Datadiff;
+	    return new Datadiff;
 		});
 	}
 	/**
