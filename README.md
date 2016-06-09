@@ -1,5 +1,7 @@
 # datadiff-laravel
 
+**Note: This package is still under development and probably wont work as described by the README.**
+
 Save a history of your model edits. Storage format inspired by, and probably compatible with, [makasim/datadiff](https://github.com/makasim/datadiff).
 
 ## Requirements
