@@ -12,7 +12,7 @@ class Datadiff {
 
     public function compare($before, $after){
         //TODO: verify that we're passing arrays
-        $diff = JsonPatch::diff($src, $dst);
+        $diff = JsonPatch::diff($before, $before);
         return $diff;
     }
 
