@@ -21,10 +21,21 @@
         "elasticsearch/elasticsearch": "~1.0",
         "mikemccabe/json-patch-php": "dev-master"
     },
+    "require-dev": {
+      "illuminate/config": "4.2.*",
+      "illuminate/database": "4.2.*",
+      "phpunit/phpunit": "~4.0",
+      "orchestra/testbench": "2.2.*"
+    },
     "autoload": {
         "psr-0": {
             "Sleavely\\Datadiff\\": "src/"
         }
+    },
+    "autoload-dev": {
+      "psr-4": {
+        "Sleavely\\Datadiff\\Tests\\": "tests"
+      }
     },
     "minimum-stability": "stable"
 }

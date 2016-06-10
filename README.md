@@ -176,3 +176,19 @@ left = commits[i - 1].data;
 
 document.getElementById('diff').innerHTML = jsondiffpatch.formatters.html.format(diffdelta, left);
 ```
+
+## Contributing
+
+Pull requests are appreciated and encouraged!
+
+```
+composer update --dev
+```
+
+### Tests
+
+All tests extend `Sleavely\Datadiff\Tests\TestCase`. To run the suite:
+
+```
+vendor/bin/phpunit
+```
