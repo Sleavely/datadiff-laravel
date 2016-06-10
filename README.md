@@ -176,3 +176,5 @@ left = commits[i - 1].data;
 
 document.getElementById('diff').innerHTML = jsondiffpatch.formatters.html.format(diffdelta, left);
 ```
+
+![](http://i.imgur.com/5iJAq1f.png)
