@@ -2,6 +2,7 @@
 namespace Sleavely\Datadiff;
 
 use Elasticsearch\Client as ElasticsearchClient;
+use Elasticsearch\Common\Exceptions\Missing404Exception;
 use mikemccabe\JsonPatch\JsonPatch;
 
 class Datadiff {
@@ -20,6 +21,7 @@ class Datadiff {
     {
         $type = $model->getTable();
         $id = $model->getAttribute($model->getKeyName());
+        if(empty($id)) return null;
 
         return $this->getCommit($type, $id, $version);
     }
@@ -44,6 +46,15 @@ class Datadiff {
         return $commits[$versionIndex];
     }
 
+    public function getModelCommits($model)
+    {
+        $type = $model->getTable();
+        $id = $model->getAttribute($model->getKeyName());
+        if(empty($id)) return null;
+
+        return $this->getCommits($type, $id);
+    }
+
     public function getCommits($documentType, $id)
     {
         if(empty(static::$documents[$documentType.'-'.$id]))
@@ -55,8 +66,15 @@ class Datadiff {
                 'type' => $documentType,
                 'id' => $id
             ];
-            $response = $client->get($params);
-            static::$documents[$documentType.'-'.$id] = $response['_source'];
+
+            try {
+                $response = $client->get($params);
+                static::$documents[$documentType.'-'.$id] = $response['_source']['commits'];
+            }
+            catch(Missing404Exception $e)
+            {
+                static::$documents[$documentType.'-'.$id] = null;
+            }
         }
 
         return static::$documents[$documentType.'-'.$id];
@@ -66,6 +84,7 @@ class Datadiff {
     {
         $type = $model->getTable();
         $id = $model->getAttribute($model->getKeyName());
+        if(empty($id)) return null;
         return $this->addCommit($type, $id, $model->diff_meta, $model->toArray());
     }
 
@@ -89,7 +108,7 @@ class Datadiff {
             'meta' => $meta,
         ];
 
-        return $this->saveCommits($commits);
+        return $this->saveCommits($documentType, $id, $commits);
     }
 
     protected function saveCommits($documentType, $id, $commits)
@@ -100,9 +119,11 @@ class Datadiff {
             'index' => static::$es_index,
             'type' => $documentType,
             'id' => $id,
-            'body' => $commits
+            'body' => [
+                'commits' => $commits
+            ]
         ];
-
+        
         $client->index($params);
         return true; // Because we havent had any exceptions so far. :D
     }
@@ -111,6 +132,7 @@ class Datadiff {
     {
         $type = $model->getTable();
         $id = $model->getAttribute($model->getKeyName());
+        if(empty($id)) return null;
         return $this->deleteDocument($type, $id);
     }
 
