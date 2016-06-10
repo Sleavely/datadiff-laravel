@@ -157,3 +157,22 @@ $diff = Datadiff::compare($obj1, $obj2);
 ```
 
 The comparison is made with [mikemccabe/json-patch-php](https://github.com/mikemccabe/json-patch-php) and returns an array with JSON Patch operations.
+
+### Visualizing diffs in the browser
+
+I recommend the autonomous package [benjamine/jsondiffpatch](https://github.com/benjamine/jsondiffpatch) for showing diffs. At it's core, this is all you'll have to do:
+
+```js
+var commits = "Datadiff::getCommits($model->getTable(), $model->getAttribute($model->getKeyName())) in PHP";
+var i = commits.length - 1;
+var diffdelta = jsondiffpatch.diff(
+  commits[i - 1].data,
+  commits[i].data
+);
+
+var left = undefined;
+// left is optional, if specified unchanged values will be visible too
+left = commits[i - 1].data;
+
+document.getElementById('diff').innerHTML = jsondiffpatch.formatters.html.format(diffdelta, left);
+```
