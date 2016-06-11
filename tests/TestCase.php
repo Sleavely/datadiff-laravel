@@ -1,6 +1,7 @@
 <?php
 namespace Sleavely\Datadiff\Tests;
 
+use Elasticsearch\Client as ElasticsearchClient;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 abstract class TestCase extends Orchestra {
@@ -22,8 +23,6 @@ abstract class TestCase extends Orchestra {
             '--database' => 'testbench',
             '--path' => '../tests/Migrations'
         ]);
-
-        //TODO: create elasticsearchindex
     }
 
     /**
@@ -44,6 +43,9 @@ abstract class TestCase extends Orchestra {
             'database' => ':memory:',
             'prefix' => '',
         ]);
+        // Avoid crushing an existing index
+        $index = $app['config']->get('datadiff::elasticsearch.index');
+        $app['config']->set('datadiff::elasticsearch.index', $index.'test');
     }
 
     /**
@@ -68,9 +70,19 @@ abstract class TestCase extends Orchestra {
         );
     }
 
-    protected function tearDown()
+    public static function tearDownAfterClass()
     {
-        //TODO: remove elasticsearchindex
+      // remove the elasticsearchindex
+      $hosts = \Config::get('datadiff::elasticsearch.hosts');
+      $client = new ElasticsearchClient(['hosts' => $hosts]);
+
+      $params = [
+        'index' => \Config::get('datadiff::elasticsearch.index')
+      ];
+      $client->indices()->delete($params);
+
+      // Now let PHPUnit and the other frameworks do their thing(s)
+      parent::tearDownAfterClass();
     }
 
 }
