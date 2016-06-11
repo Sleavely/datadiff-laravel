@@ -102,11 +102,18 @@ class Datadiff {
         }
 
         $commits = $this->getCommits($documentType, $id);
-        $commits[] = [
+        $newCommit = [
             'data' => $dataNow,
             'diff' => $this->compare($dataBefore, $dataNow),
             'meta' => $meta,
         ];
+        $commits[] = $newCommit;
+
+        // Only commit if there was a change
+        if(empty($newCommit['diff']))
+        {
+          return $newCommit;
+        }
 
         return $this->saveCommits($documentType, $id, $commits);
     }
