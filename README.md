@@ -178,3 +178,19 @@ document.getElementById('diff').innerHTML = jsondiffpatch.formatters.html.format
 ```
 
 ![](http://i.imgur.com/5iJAq1f.png)
+
+## Contributing
+
+Pull requests are appreciated and encouraged!
+
+```
+composer update --dev
+```
+
+### Tests
+
+All tests extend `Sleavely\Datadiff\Tests\TestCase`. To run the suite:
+
+```
+vendor/bin/phpunit
+```
