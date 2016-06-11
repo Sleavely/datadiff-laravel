@@ -70,10 +70,29 @@ class BasicTests extends TestCase {
         $model->fill([
             'author_id' => 1337,
             'title' => 'Hello World!',
-            'body' => 'This is a body. :D',
+            'body' => 'This is the body.',
             'published' => true
         ]);
         $model->save();
         $model->delete();
+    }
+
+    public function testSaveModelTwiceAndDiff()
+    {
+      $model = new Models\ModelWithTraitAndBootObserver;
+      $model->fill([
+          'author_id' => 1337,
+          'title' => 'Hello',
+          'body' => 'This is a body. :D',
+          'published' => true
+      ]);
+      $model->save();
+      $diff = $model->diff();
+      $this->assertEquals($diff['data'], $model->toArray());
+
+      $model->title = 'Hello World';
+      $model->save();
+      $diff = $model->diff();
+      $this->assertEquals($diff['data'], $model->toArray());
     }
 }
