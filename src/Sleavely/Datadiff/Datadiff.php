@@ -142,7 +142,15 @@ class Datadiff {
         ];
 
         $client->index($params);
-        return true; // Because we havent had any exceptions so far. :D
+
+        // Empty the in-memory cache
+        if(isset(static::$documents[$documentType.'-'.$id]))
+        {
+          unset(static::$documents[$documentType.'-'.$id]);
+        }
+
+        $lastCommit = array_pop((array_slice($commits, -1)));
+        return $lastCommit;
     }
 
     public function deleteModel($model)
