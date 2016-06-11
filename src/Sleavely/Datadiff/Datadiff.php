@@ -73,7 +73,8 @@ class Datadiff {
             }
             catch(Missing404Exception $e)
             {
-                static::$documents[$documentType.'-'.$id] = null;
+                // Always return an array, because ES will hate us later if we dont
+                static::$documents[$documentType.'-'.$id] = [];
             }
         }
 
