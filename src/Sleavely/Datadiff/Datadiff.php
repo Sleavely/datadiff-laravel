@@ -93,6 +93,7 @@ class Datadiff {
     {
         // Try to load the last commit so we can generate a diff
         $lastCommit = $this->getCommit($documentType, $id);
+        $dataBefore = [];
         if($lastCommit !== null)
         {
             $dataBefore = $lastCommit['data'];
