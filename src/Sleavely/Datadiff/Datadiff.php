@@ -69,7 +69,9 @@ class Datadiff {
 
             try {
                 $response = $client->get($params);
-                static::$documents[$documentType.'-'.$id] = $response['_source']['commits'];
+                // "json_decode, wtf?!" - You
+                // "See saveCommits()" - Me
+                static::$documents[$documentType.'-'.$id] = json_decode($response['_source']['commits'], TRUE);
             }
             catch(Missing404Exception $e)
             {
@@ -113,12 +115,22 @@ class Datadiff {
     {
         $client = $this->esClient();
 
+        // You'll think I'm crazy now (its gonna be stored as JSON anyway, right?!),
+        // but bear with me. Eloquent models come in a lot of different shapes
+        // and sizes, and the amount of fields we'll store can get a bit ridiculous.
+        // https://www.elastic.co/guide/en/elasticsearch/guide/1.x/finite-scale.html
+
+        // On top of this, by storing it as a string in ES we can avoid a lot of
+        // issues with the mapping configuration when we sometimes have null
+        // values where ES might expect relations represented as arrays.
+        $jsonCommits = json_encode($commits);
+
         $params = [
             'index' => static::$es_index,
             'type' => $documentType,
             'id' => $id,
             'body' => [
-                'commits' => $commits
+                'commits' => $jsonCommits
             ]
         ];
 
