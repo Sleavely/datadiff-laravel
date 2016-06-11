@@ -89,17 +89,13 @@ class Datadiff {
         return $this->addCommit($type, $id, $model->diff_meta, $model->toArray());
     }
 
-    public function addCommit($documentType, $id, $meta, $dataNow, $dataBefore = null)
+    public function addCommit($documentType, $id, $meta, $dataNow)
     {
-        if($dataBefore === null)
+        // Try to load the last commit so we can generate a diff
+        $lastCommit = $this->getCommit($documentType, $id);
+        if($lastCommit !== null)
         {
-            // Either its a new model or we want to auto-populate this.
-            // Regardless, try to load the last commit and we'll figure it out.
-            $lastCommit = $this->getCommit($documentType, $id);
-            if($lastCommit !== null)
-            {
-                $dataBefore = $lastCommit['data'];
-            }
+            $dataBefore = $lastCommit['data'];
         }
 
         $commits = $this->getCommits($documentType, $id);
@@ -124,7 +120,7 @@ class Datadiff {
                 'commits' => $commits
             ]
         ];
-        
+
         $client->index($params);
         return true; // Because we havent had any exceptions so far. :D
     }
