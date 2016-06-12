@@ -41,7 +41,15 @@ class Datadiff {
 
         // Human-to-computer conversion of index
         $versionIndex = intval($version) - 1;
-        if($versionIndex < 0) $versionIndex = 0;
+
+        // Handle negative versioning: traverse from end of array
+        if($versionIndex < 0) $versionIndex = count($commits) + intval($version) - 1;
+
+        // If versionIndex is still below zero
+        // we're trying to go too far back in time.
+        if($versionIndex < 0) return null;
+        // ... and we cant go into the future either.
+        if($versionIndex > (count($commits) - 1)) return null;
 
         return $commits[$versionIndex];
     }

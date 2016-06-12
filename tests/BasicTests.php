@@ -146,7 +146,55 @@ class BasicTests extends TestCase {
     $this->assertEquals('Version 1', $diff['data']['title']);
     $diff = $model->diff(2);
     $this->assertEquals('Version 2', $diff['data']['title']);
+
+    // Default value is null, assumes we want the latest commit
     $diff = $model->diff();
     $this->assertEquals('Version 3', $diff['data']['title']);
+
+    // Zero is very ambiguous, so lets assume latest commit here too
+    $diff = $model->diff(0);
+    $this->assertEquals('Version 3', $diff['data']['title']);
+
+    // Trying to get higher version than there are commits
+    $diff = $model->diff(10);
+    $this->assertNull($diff);
+  }
+
+  /**
+   * Test alternate syntax for getting commits
+   * from the end of the commits array.
+   */
+  public function testGetVersionFromEndOfArray()
+  {
+    $model = new Models\ModelWithTraitAndBootObserver;
+    $model->fill([
+      'author_id' => 1337,
+      'title' => 'Version 1',
+      'body' => 'Content goes here.',
+      'published' => true,
+      'id' => 8
+    ]);
+    $model->save();
+
+    $model->title = 'Version 2';
+    $model->save();
+
+    $model->title = 'Version 3';
+    $model->save();
+
+    $model->title = 'Version 4';
+    $model->save();
+
+    // Get most recent version
+    $diff = $model->diff(-1);
+    $this->assertEquals('Version 3', $diff['data']['title']);
+
+    // Second most recent version
+    $diff = $model->diff(-2);
+    $this->assertEquals('Version 2', $diff['data']['title']);
+
+    // And going too far back gives us nothing
+    $diff = $model->diff(-10);
+    $this->assertNull($diff);
   }
 }
