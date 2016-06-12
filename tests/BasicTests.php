@@ -5,6 +5,9 @@ use Sleavely\Datadiff\Datadiff;
 
 class BasicTests extends TestCase {
 
+  /**
+   * Models with just the trait shouldn't affect anything.
+   */
   public function testModelGeneration()
   {
     $model = new Models\ModelWithTrait;
@@ -16,8 +19,12 @@ class BasicTests extends TestCase {
     ]);
     $model->save();
     $this->assertEquals('Hello World', $model->title);
+    $this->assertNotNull($model->id);
   }
 
+  /**
+   * diff()ing models without an ID shouldnt even query ES, and default to null
+   */
   public function testModelDiffBeforeSave()
   {
     $model = new Models\ModelWithTrait;
@@ -32,8 +39,9 @@ class BasicTests extends TestCase {
   }
 
   /**
-  * Saving a model without an observer will result in a 404 when attempting to diff
-  */
+   * Attempting to diff() models without DatadiffObserver
+   * should result in no diff (null).
+   */
   public function testSavedModelDiffWithNoHistory()
   {
     $model = new Models\ModelWithTrait;
@@ -49,6 +57,10 @@ class BasicTests extends TestCase {
     $this->assertNull($diff);
   }
 
+  /**
+   * When saving a proper Datadiff-enabled model, verify that diff()
+   * returns latest data version when called without argument.
+   */
   public function testSavedModelDiffWithOneCommit()
   {
     $model = new Models\ModelWithTraitAndBootObserver;
@@ -64,6 +76,9 @@ class BasicTests extends TestCase {
     $this->assertEquals($model->toArray(), $diff['data']);
   }
 
+  /**
+   * Verify that diff() goes back to null results after deleting data.
+   */
   public function testCreatingAndDeletingModel()
   {
     $model = new Models\ModelWithTraitAndBootObserver;
