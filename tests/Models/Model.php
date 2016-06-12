@@ -7,5 +7,5 @@ class Model extends EloquentModel {
 
   protected $table = 'models';
 
-  protected $guarded = ['id'];
+  protected $guarded = [];
 }

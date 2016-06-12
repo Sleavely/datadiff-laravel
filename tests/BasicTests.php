@@ -15,7 +15,8 @@ class BasicTests extends TestCase {
       'author_id' => 1337,
       'title' => 'Hello World',
       'body' => 'This is a body.',
-      'published' => true
+      'published' => true,
+      'id' => 1
     ]);
     $model->save();
     $this->assertEquals('Hello World', $model->title);
@@ -32,7 +33,8 @@ class BasicTests extends TestCase {
       'author_id' => 1337,
       'title' => 'Hello World',
       'body' => 'This is a body.',
-      'published' => true
+      'published' => true,
+      'id' => 2
     ]);
     $diff = $model->diff();
     $this->assertNull($diff);
@@ -49,7 +51,8 @@ class BasicTests extends TestCase {
       'author_id' => 1337,
       'title' => 'Hello World',
       'body' => 'This is a bodega.',
-      'published' => true
+      'published' => true,
+      'id' => 3
     ]);
     $model->save();
 
@@ -68,7 +71,8 @@ class BasicTests extends TestCase {
       'author_id' => 1337,
       'title' => 'Hello World',
       'body' => 'This is a body.',
-      'published' => true
+      'published' => true,
+      'id' => 4
     ]);
     $model->save();
 
@@ -86,7 +90,8 @@ class BasicTests extends TestCase {
       'author_id' => 1337,
       'title' => 'Hello World!',
       'body' => 'This is the body.',
-      'published' => true
+      'published' => true,
+      'id' => 5
     ]);
     $model->save();
     $diff = $model->diff();
@@ -104,7 +109,8 @@ class BasicTests extends TestCase {
       'author_id' => 1337,
       'title' => 'Hello',
       'body' => 'This is a body. :D',
-      'published' => true
+      'published' => true,
+      'id' => 6
     ]);
     $model->save();
     $diff = $model->diff();
