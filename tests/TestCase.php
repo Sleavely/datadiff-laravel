@@ -3,9 +3,14 @@ namespace Sleavely\Datadiff\Tests;
 
 use Elasticsearch\Client as ElasticsearchClient;
 use Orchestra\Testbench\TestCase as Orchestra;
+use Zumba\PHPUnit\Extensions\ElasticSearch\TestTrait as ElasticTestTrait;
+use Zumba\PHPUnit\Extensions\ElasticSearch\Client\Connector as ElasticTestConnector;
+use Zumba\PHPUnit\Extensions\ElasticSearch\DataSet\DataSet as ElasticTestDataSet;
 
 abstract class TestCase extends Orchestra {
-  
+
+  use ElasticTestTrait;
+
   /**
   * Setup the test environment.
   *
@@ -23,6 +28,8 @@ abstract class TestCase extends Orchestra {
       '--database' => 'testbench',
       '--path' => '../tests/Migrations'
     ]);
+
+    Models\ModelWithTraitAndBootObserver::observe(new \Sleavely\Datadiff\DatadiffObserver);
   }
 
   /**
@@ -44,8 +51,44 @@ abstract class TestCase extends Orchestra {
       'prefix' => '',
     ]);
     // Avoid crushing an existing index
-    $index = $app['config']->get('datadiff::elasticsearch.index', 'datadiffs');
-    $app['config']->set('datadiff::elasticsearch.index', $index.'test');
+    $app['datadiff']->setEsTestClient($this->getElasticSearchConnector()->getConnection());
+  }
+
+  /**
+  * Get the ElasticSearch connection for this test.
+  *
+  * @return Zumba\PHPUnit\Extensions\ElasticSearch\Client\Connector
+  */
+  public function getElasticSearchConnector() {
+    if (empty($this->connection)) {
+      $this->connection = new ElasticTestConnector(
+        new ElasticsearchClient()
+      );
+    }
+    return $this->connection;
+  }
+
+  /**
+  * Get the dataset to be used for this test.
+  *
+  * @return Zumba\PHPUnit\Extensions\ElasticSearch\DataSet\DataSet
+  */
+  public function getElasticSearchDataSet() {
+    $dataset = new ElasticTestDataSet($this->getElasticSearchConnector());
+    $dataset->setFixture([
+      'datadifftests' => [
+        'models' => [
+          [
+            'author_id' => 1,
+            'title' => 'Dummy filler',
+            'body' => 'Some content.',
+            'published' => false,
+            'id' => 9999
+          ]
+        ]
+      ]
+    ]);
+    return $dataset;
   }
 
   /**
@@ -68,21 +111,6 @@ abstract class TestCase extends Orchestra {
     return array(
       'Datadiff' => 'Sleavely\Datadiff\Facades\DatadiffFacade'
     );
-  }
-
-  public static function tearDownAfterClass()
-  {
-    // remove the elasticsearchindex
-    $hosts = \Config::get('datadiff::elasticsearch.hosts');
-    $client = new ElasticsearchClient(['hosts' => $hosts]);
-
-    $params = [
-      'index' => \Config::get('datadiff::elasticsearch.index')
-    ];
-    $client->indices()->delete($params);
-
-    // Now let PHPUnit and the other frameworks do their thing(s)
-    parent::tearDownAfterClass();
   }
 
   /**

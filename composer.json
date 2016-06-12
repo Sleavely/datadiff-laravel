@@ -25,7 +25,8 @@
       "illuminate/config": "4.2.*",
       "illuminate/database": "4.2.*",
       "phpunit/phpunit": "~4.0",
-      "orchestra/testbench": "2.2.*"
+      "orchestra/testbench": "2.2.*",
+      "zumba/elasticsearchunit": "1.3.0"
     },
     "autoload": {
         "psr-0": {
