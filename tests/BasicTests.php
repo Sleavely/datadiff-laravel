@@ -61,7 +61,7 @@ class BasicTests extends TestCase {
         $model->save();
 
         $diff = $model->diff();
-        $this->assertEquals($diff['data'], $model->toArray());
+        $this->assertEquals($model->toArray(), $diff['data']);
     }
 
     public function testCreatingAndDeletingModel()
