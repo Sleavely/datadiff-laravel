@@ -40,7 +40,7 @@ class BasicTests extends TestCase {
         $model->fill([
             'author_id' => 1337,
             'title' => 'Hello World',
-            'body' => 'This is a body.',
+            'body' => 'This is a bodega.',
             'published' => true
         ]);
         $model->save();
@@ -74,7 +74,12 @@ class BasicTests extends TestCase {
             'published' => true
         ]);
         $model->save();
+        $diff = $model->diff();
+        $this->assertEquals($model->toArray(), $diff['data']);
+
         $model->delete();
+        $diff = $model->diff();
+        $this->assertNull($diff);
     }
 
     public function testSaveModelTwiceAndDiff()
@@ -88,11 +93,11 @@ class BasicTests extends TestCase {
       ]);
       $model->save();
       $diff = $model->diff();
-      $this->assertEquals($diff['data'], $model->toArray());
+      $this->assertEquals($model->toArray(), $diff['data']);
 
       $model->title = 'Hello World';
       $model->save();
       $diff = $model->diff();
-      $this->assertEquals($diff['data'], $model->toArray());
+      $this->assertEquals($model->toArray(), $diff['data']);
     }
 }
