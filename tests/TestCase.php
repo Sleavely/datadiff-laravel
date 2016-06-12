@@ -44,7 +44,7 @@ abstract class TestCase extends Orchestra {
             'prefix' => '',
         ]);
         // Avoid crushing an existing index
-        $index = $app['config']->get('datadiff::elasticsearch.index');
+        $index = $app['config']->get('datadiff::elasticsearch.index', 'datadiffs');
         $app['config']->set('datadiff::elasticsearch.index', $index.'test');
     }
 
