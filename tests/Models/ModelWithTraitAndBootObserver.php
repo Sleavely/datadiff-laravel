@@ -5,11 +5,11 @@ use Sleavely\Datadiff\DatadiffTrait;
 use Sleavely\Datadiff\DatadiffObserver;
 
 class ModelWithTraitAndBootObserver extends Model {
-    use DatadiffTrait;
+  use DatadiffTrait;
 
-    public static function boot()
-    {
-        static::observe(new DatadiffObserver);
-        return parent::boot();
-    }
+  public static function boot()
+  {
+    static::observe(new DatadiffObserver);
+    return parent::boot();
+  }
 }
