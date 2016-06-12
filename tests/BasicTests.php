@@ -121,4 +121,32 @@ class BasicTests extends TestCase {
     $diff = $model->diff();
     $this->assertEquals($model->toArray(), $diff['data']);
   }
+
+  /**
+   * Test that you can retrieve different version numbers
+   */
+  public function testGetSpecificVersion()
+  {
+    $model = new Models\ModelWithTraitAndBootObserver;
+    $model->fill([
+      'author_id' => 1337,
+      'title' => 'Version 1',
+      'body' => 'Content goes here.',
+      'published' => true,
+      'id' => 7
+    ]);
+    $model->save();
+
+    $model->title = 'Version 2';
+    $model->save();
+
+    $model->title = 'Version 3';
+    $model->save();
+    $diff = $model->diff(1);
+    $this->assertEquals('Version 1', $diff['data']['title']);
+    $diff = $model->diff(2);
+    $this->assertEquals('Version 2', $diff['data']['title']);
+    $diff = $model->diff();
+    $this->assertEquals('Version 3', $diff['data']['title']);
+  }
 }
