@@ -193,5 +193,10 @@ class Datadiff {
         static::$es_client = NULL;
         return $this->esClient();
     }
+    public function setEsTestClient($client)
+    {
+      static::$es_index = 'datadifftests';
+      static::$es_client = $client;
+    }
 
 }
