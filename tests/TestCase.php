@@ -85,4 +85,17 @@ abstract class TestCase extends Orchestra {
       parent::tearDownAfterClass();
     }
 
+    /**
+     * Helper for debugging tests
+     */
+     public function out($var)
+     {
+       if(is_array($var) || is_object($var))
+       {
+         print print_r($var, TRUE).PHP_EOL;
+         return;
+       }
+       print var_export($var, TRUE).PHP_EOL;
+     }
+
 }
