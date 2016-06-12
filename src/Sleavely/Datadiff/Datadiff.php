@@ -172,6 +172,13 @@ class Datadiff {
         ];
 
         $client->delete($params);
+
+        // Empty the in-memory cache
+        if(isset(static::$documents[$documentType.'-'.$id]))
+        {
+          unset(static::$documents[$documentType.'-'.$id]);
+        }
+
         return true;
     }
 
