@@ -1,6 +1,6 @@
 # datadiff-laravel
 
-[![Build Status](https://travis-ci.org/Sleavely/datadiff-laravel.svg?branch=master)](https://travis-ci.org/Sleavely/datadiff-laravel)
+[![Build Status](https://travis-ci.org/Sleavely/datadiff-laravel.svg?branch=laravel-4.2)](https://travis-ci.org/Sleavely/datadiff-laravel)
 
 Save a history of your model edits. Storage format inspired by, and probably compatible with, [makasim/datadiff](https://github.com/makasim/datadiff).
 
